@@ -12,7 +12,7 @@ This project is a **proof of concept** and is not intended for production use. I
 
 The project consists of three main components:
 
-### 1. Arduino SRAM PUF
+### 1. Arduino SRAM-PUF
 - **Physical Unclonable Function (PUF)** implementation using the inherent randomness in SRAM startup values.
 - A custom bootloader and data manipulation are required to obtain a stable PUF response.
 
@@ -181,9 +181,21 @@ Now the stable PUF can be used as desired.
      ```
 The contract is now deployed, and you can interact with it.
 
-### 3. Interacting with the NFT [WIP]
+### 3. Interacting with the NFT
+Make sure MetaMask is installed, the Hardhat node is running and the Smart Contract is deployed.
+1. **Set up the DApp**:
+    - Install Web3.js:
+        ```bash
+        npm install web3
+        ```
+    - Make sure to insert the Smart Contract address into the const `contractAddress` variable of the `index.html` file.
 
-WIP
+2. **Run the DApp**:
+    - To run the DApp, go to the root of the project and start a webserver:
+      ```bash
+      npx watch-http-server DApp/
+      ```
+Now you can interact with the DApp to mint NFTs.
 
 ## Authors
 
@@ -194,4 +206,4 @@ This project was developed by:
 
 ## Acknowledgments
 
-We extend our gratitude to **Dr. Franco Cirillo** for providing the hardware and software needed to implement the PUF.
+We extend our gratitude to **Dr. Franco Cirillo** for providing the hardware and software needed to implement the Arduino SRAM-PUF.
