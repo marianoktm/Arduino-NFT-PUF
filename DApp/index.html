@@ -138,6 +138,9 @@
   <div class="input-group">
     <button class="btn" id="mintButton">Convert PUF and mint!</button>
   </div>
+  <div class="input-group">
+    <button class="btn" id="checkOwnerButton">Check PUF owner!</button>
+  </div>
 </div>
 
 <h3>Results:</h3>
@@ -360,6 +363,8 @@
       document.getElementById('getCurrentAccountButton').addEventListener('click', getCurrentAccountHandler);
       // Mint NFT con la PUF
       document.getElementById("mintButton").addEventListener("click", mintHandler);
+      // Check PUF owner
+      document.getElementById("checkOwnerButton").addEventListener("click", checkOwnerHandler);
     }
     catch (error) {
       console.log("Error during event handlers registration: ", error);
@@ -516,6 +521,66 @@
 
   }
 
+  async function checkOwnerHandler() {
+    if (!window.ethereum) {
+      alert("You must be connected to MetaMask first!");
+      document.getElementById('transactionResult').innerHTML = `
+  <div style="background-color: #f8d7da; padding: 15px; border-radius: 8px; border: 1px solid #f5c6cb; color: #721c24;">
+    <strong>Error:</strong> ${error}
+  </div>
+`;
+      return;
+    }
+
+    const pufInput = document.getElementById("pufInput").value;
+    if (!pufInput) {
+      alert("Insert a valid PUF!");
+      document.getElementById('transactionResult').innerHTML = `
+  <div style="background-color: #f8d7da; padding: 15px; border-radius: 8px; border: 1px solid #f5c6cb; color: #721c24;">
+    <strong>Error:</strong> ${error}
+  </div>
+`;
+      return;
+    }
+
+    const hashedPUF = ethers.utils.sha256(ethers.utils.toUtf8Bytes(pufInput));
+
+    let contract;
+    try {
+      contract = new web3.eth.Contract(contractABI, contractAddress);
+    }
+    catch (error) {
+      alert(`Contract error: ${error}`);
+      console.log("Fee error: ", error);
+      document.getElementById('transactionResult').innerHTML = `
+  <div style="background-color: #f8d7da; padding: 15px; border-radius: 8px; border: 1px solid #f5c6cb; color: #721c24;">
+    <strong>Error:</strong> ${error}
+  </div>
+`;
+      return;
+    }
+
+    try {
+      const eventualOwner = await contract.methods.ownerOfDevice(hashedPUF).call();
+      console.log("the nft already exists!");
+      document.getElementById('transactionResult').innerHTML = `
+  <div style="background-color: #e8f5e9; padding: 20px; border-radius: 8px; border: 1px solid #81c784; color: #388e3c;">
+    <h3>This PUF has already been minted!</h3>
+    <p><strong>PUF (hashed):</strong> <span style="font-weight: bold; color: #333;">${hashedPUF}</span></p>
+    <p><strong>NFT Owner:</strong> <span style="font-weight: bold; color: #333;">${eventualOwner}</span></p>
+  </div>
+`;
+    }
+    catch (error) {
+      console.log("the nft does not exist.");
+      document.getElementById('transactionResult').innerHTML = `
+  <div style="background-color: #e8f5e9; padding: 20px; border-radius: 8px; border: 1px solid #81c784; color: #388e3c;">
+    <h3>This PUF has not been minted yet!</h3>
+    <p><strong>PUF (hashed):</strong> <span style="font-weight: bold; color: #333;">${hashedPUF}</span></p>
+  </div>
+`;
+    }
+  }
 </script>
 </body>
 </html>
