@@ -329,20 +329,16 @@
   ];
   const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
-  /**
-   * "main"
-   */
+  // "main".
   if (window.ethereum) {
-    initWeb3(); // Initialize Web3
-    registerEvents(); // Register all events for the interface
+    initWeb3();
+    registerEvents();
   }
   else {
     document.getElementById('warn').innerHTML = "Please <a href='https://metamask.io/download/'>install MetaMask</a>.";
   }
 
-  /**
-   * Initializes the application by connecting it to MetaMask
-   */
+  // Initializes the app and connects it to MetaMask.
   async function initWeb3() {
     web3 = new Web3(window.ethereum);
 
@@ -354,16 +350,14 @@
     }
   }
 
-  /**
-   * Insert here all the various events to track
-   */
+  // Registers all the UI events.
   async function registerEvents() {
     try {
-      // Get current account on a button click
+      // Get current account on a button click.
       document.getElementById('getCurrentAccountButton').addEventListener('click', getCurrentAccountHandler);
-      // Mint NFT con la PUF
+      // Mint NFT con la PUF.
       document.getElementById("mintButton").addEventListener("click", mintHandler);
-      // Check PUF owner
+      // Check PUF owner.
       document.getElementById("checkOwnerButton").addEventListener("click", checkOwnerHandler);
     }
     catch (error) {
@@ -371,21 +365,14 @@
     }
   }
 
-  /**
-   *  Event handler for the "click" event on the "requestAccountsButton" button.
-   *  It gets all the MetaMask accounts and prints the account currently in use.
-   */
+  // Shows on the UI the account currently in use by MetaMask.
   async function getCurrentAccountHandler() {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
     const accounts = await web3.eth.getAccounts();
     document.getElementById('currentAccount',).innerText = `Current Account: ${accounts[0]}`;
   }
 
-  /**
-   *  Event handler for the "click" event on the "mintButton" button.
-   *  It gets the PUF from the "pufInput" field, converts it into a SHA-256 digest and
-   *  mints a new NFT from it.
-   */
+  // Retrieves the PUF and NFT owner-to-be from the UI fields and tries to mint an NFT. Shows the result on the UI.
   async function mintHandler() {
     if (!window.ethereum) {
       alert("You must be connected to MetaMask first!");
@@ -521,6 +508,7 @@
 
   }
 
+  // Retrieves the PUF from the UI field and checks if the PUF has already been minted. Shows the result on the UI.
   async function checkOwnerHandler() {
     if (!window.ethereum) {
       alert("You must be connected to MetaMask first!");
