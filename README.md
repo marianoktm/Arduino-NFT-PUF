@@ -195,7 +195,7 @@ Make sure MetaMask is installed, the Hardhat node is running and the Smart Contr
       ```bash
       npx watch-http-server DApp/
       ```
-Now you can interact with the DApp to mint NFTs.
+Now you can interact with the DApp to mint NFTs. Make sure to connect MetaMask to the desired network, and notice only the contract owner can mint NFTs (if you're deploying using this guide, the owner will be the Account 0 of Hardhat).
 
 ## Authors
 
